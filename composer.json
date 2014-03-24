@@ -8,5 +8,8 @@
         "php" : ">=5.3.0",
         "nategood/commando": "*"
     },
-    "bin": ["bin/phar"]
+    "bin": ["bin/phar"],
+    "autoload": {
+        "psr-0": {"TechDivision": ["src/", "tests/"]}
+    }
 }
