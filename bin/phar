@@ -70,9 +70,9 @@ $cmd->option('d')
     ->aka('directory')
     ->describedAs('Absoulte path of the directory to create the PHAR file from');
 
-$pharName = $cmd['name];
-$command = $cmd['command];
-$directory = $cmd['directory];
+$pharName = $cmd['name'];
+$command = $cmd['command'];
+$directory = $cmd['directory'];
 
 $invoker = new Invoker();
 $invoker->setCreateCommand(new CreateCommand(new CreateReceiver($pharName, $directory)));
