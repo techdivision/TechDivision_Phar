@@ -1,0 +1,79 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ *
+ * PHP version 5
+ *
+ * @category  Appserver
+ * @package   TechDivision_Runtime
+ * @author    Tim Wagner <tw@techdivision.com>
+ * @copyright 2013 TechDivision GmbH <info@techdivision.com>
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @link      http://www.appserver.io
+ */
+
+date_default_timezone_set('UTC');
+
+if (PHP_SAPI !== 'cli') {
+    die('phar should be invoked via the CLI version of PHP, not the ' . PHP_SAPI . ' SAPI' . PHP_EOL);
+}
+
+$files = array(
+    __DIR__ . '/../autoload.php',
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/../../../autoload.php',
+);
+
+foreach ($files as $file) {
+    if (file_exists($file)) {
+        require $file;
+        define('PHAR_COMPOSER_INSTALL', $file);
+        break;
+    }
+}
+
+if (!defined('PHAR_COMPOSER_INSTALL')) {
+    die(
+        'You need to set up the project dependencies using the following commands:' . PHP_EOL .
+        'curl -s http://getcomposer.org/installer | php' . PHP_EOL .
+        'php composer.phar install' . PHP_EOL
+    );
+}
+
+use Commando\Command;
+use TechDivision\Phar\Invoker;
+use TechDivision\Phar\CreateCommand;
+use TechDivision\Phar\CreateReceiver;
+
+$cmd = new Command();
+
+$cmd->option('c')
+    ->require()
+    ->aka('command')
+    ->describedAs('Command to excecute')
+    ->must(function($command) {
+        $commands = array(CreateCommand::COMMAND);
+        return in_array($command, $commands);
+    });
+
+$cmd->option('n')
+    ->aka('name')
+    ->describedAs('Name of the PHAR file to create/extract');
+        
+$cmd->option('d')
+    ->aka('directory')
+    ->describedAs('Absoulte path of the directory to create the PHAR file from');
+
+$pharName = $cmd['name];
+$command = $cmd['command];
+$directory = $cmd['directory];
+
+$invoker = new Invoker();
+$invoker->setCreateCommand(new CreateCommand(new CreateReceiver($pharName, $directory)));
+$invoker->create();

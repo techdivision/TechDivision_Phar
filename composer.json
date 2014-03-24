@@ -1,0 +1,12 @@
+{
+    "name": "techdivision/phar",
+    "type": "package",
+    "description": "Utility package that provides high performance PHAR helper functions.",
+    "homepage": "https://github.com/techdivision/TechDivision_Phar",
+    "license": ["OSL-3.0"],
+    "require": {
+        "php" : ">=5.3.0",
+        "nategood/commando": "*"
+    },
+    "bin": ["bin/phar"]
+}
