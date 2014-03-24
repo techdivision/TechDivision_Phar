@@ -70,6 +70,6 @@ class CreateCommand implements Command
      */
     public function execute()
     {
-        $this->receiver->excecute();
+        $this->receiver->execute();
     }
 }

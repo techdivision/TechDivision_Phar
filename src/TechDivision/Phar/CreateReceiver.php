@@ -102,7 +102,7 @@ class CreateReceiver implements Receiver
      */
     protected function buildFromDirectory()
     {
-        $phar = new Phar($this->pharName, $this->flags, $this->alias);
+        $phar = new \Phar($this->pharName, $this->flags, $this->alias);
         $phar->buildFromDirectory($this->directory);
     }
 }
