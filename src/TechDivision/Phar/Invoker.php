@@ -60,6 +60,6 @@ class Invoker
      */
     public function create()
     {
-        $this->createCommand->excecute();
+        $this->createCommand->execute();
     }
 }
